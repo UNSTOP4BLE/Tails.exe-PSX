@@ -21,7 +21,6 @@ typedef struct
 	Gfx_Tex tex_back1; //back zad
 	Gfx_Tex tex_back2; //grass
 	Gfx_Tex tex_back3; //grass zad
-	Gfx_Tex tex_black; //black
 
 } Back_Week1;
 
@@ -33,8 +32,7 @@ void Back_Week1_DrawFG(StageBack *back)
 
 	if (stage.stage_id == StageId_1_1 && stage.song_step >= 528 && stage.song_step <= 607) {
 	//Draw black
-	
-	RECT black_src = {0, 0, 4, 4};
+	RECT black_src = {0, 235, 1, 1};
 	RECT_FIXED black_dst = {
 		FIXED_DEC(-170,1),
 		FIXED_DEC(-125,1),
@@ -42,7 +40,7 @@ void Back_Week1_DrawFG(StageBack *back)
 		FIXED_DEC(300,1)
 	};
 	
-	Stage_DrawTex(&this->tex_black, &black_src, &black_dst, stage.camera.bzoom);
+	Stage_DrawTex(&this->tex_back0, &black_src, &black_dst, stage.camera.bzoom);
 	}
 }
 
@@ -145,7 +143,6 @@ StageBack *Back_Week1_New(void)
 	Gfx_LoadTex(&this->tex_back1, Archive_Find(arc_back, "back1.tim"), 0);
 	Gfx_LoadTex(&this->tex_back2, Archive_Find(arc_back, "back2.tim"), 0);
 	Gfx_LoadTex(&this->tex_back3, Archive_Find(arc_back, "back3.tim"), 0);
-	Gfx_LoadTex(&this->tex_black, Archive_Find(arc_back, "black.tim"), 0);
 	Mem_Free(arc_back);
 	
 	return (StageBack*)this;
