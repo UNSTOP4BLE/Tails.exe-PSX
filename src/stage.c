@@ -23,7 +23,7 @@
 #include "object/splash.h"
 
 //Stage constants
-#define STAGE_PERFECT //Play all notes perfectly
+//#define STAGE_PERFECT //Play all notes perfectly
 //#define STAGE_NOHUD //Disable the HUD
 
 //#define STAGE_FREECAM //Freecam
@@ -1024,6 +1024,19 @@ static void Stage_LoadOpponent(void)
 	//Load opponent character
 	Character_Free(stage.opponent);
 	stage.opponent = stage.stage_def->ochar.new(stage.stage_def->ochar.x, stage.stage_def->ochar.y);
+	stage.opponent = stage.stage_def->ochar.new(stage.stage_def->ochar.x, stage.stage_def->ochar.y);
+}
+
+static void Stage_LoadOpponent2(void)
+{
+	//Load opponent character
+	Character_Free(stage.opponent2);
+	if (stage.stage_def->ochar2.new != NULL) {
+		stage.opponent2 = stage.stage_def->ochar2.new(stage.stage_def->ochar2.x, stage.stage_def->ochar2.y);
+		stage.opponent2 = stage.stage_def->ochar2.new(stage.stage_def->ochar2.x, stage.stage_def->ochar2.y);
+	}
+	else
+		stage.opponent2 = NULL;
 }
 
 static void Stage_LoadGirlfriend(void)
@@ -1208,6 +1221,7 @@ static void Stage_LoadState(void)
 	
 	stage.player_state[0].character = stage.player;
 	stage.player_state[1].character = stage.opponent;
+	stage.player_state[1].character = stage.opponent2;
 	for (int i = 0; i < 2; i++)
 	{
 		memset(stage.player_state[i].arrow_hitan, 0, sizeof(stage.player_state[i].arrow_hitan));
@@ -1248,6 +1262,7 @@ void Stage_Load(StageId id, StageDiff difficulty, boolean story)
 	//Load characters
 	Stage_LoadPlayer();
 	Stage_LoadOpponent();
+	Stage_LoadOpponent2();
 	Stage_LoadGirlfriend();
 	Stage_SwapChars();
 	
@@ -1320,6 +1335,8 @@ void Stage_Unload(void)
 	stage.player = NULL;
 	Character_Free(stage.opponent);
 	stage.opponent = NULL;
+	Character_Free(stage.opponent2);
+	stage.opponent2 = NULL;
 	Character_Free(stage.gf);
 	stage.gf = NULL;
 }
@@ -1363,6 +1380,16 @@ static boolean Stage_NextLoad(void)
 			stage.opponent->x = stage.stage_def->ochar.x;
 			stage.opponent->y = stage.stage_def->ochar.y;
 		}
+		if (load & STAGE_LOAD_OPPONENT2)
+		{
+			Stage_LoadOpponent2();
+		}
+		else
+		{
+			stage.opponent2->x = stage.stage_def->ochar2.x;
+			stage.opponent2->y = stage.stage_def->ochar2.y;
+		}
+
 		Stage_SwapChars();
 		if (load & STAGE_LOAD_GIRLFRIEND)
 		{
@@ -1846,29 +1873,6 @@ void Stage_Tick(void)
 				Stage_DrawTex(&stage.tex_hud1, &health_back, &health_dst, stage.bump);
 			}
 			
-			//Hardcoded stage stuff
-			switch (stage.stage_id)
-			{
-				case StageId_1_2: //Fresh GF bop
-					switch (stage.song_step)
-					{
-						case 16 << 2:
-							stage.gf_speed = 2 << 2;
-							break;
-						case 48 << 2:
-							stage.gf_speed = 1 << 2;
-							break;
-						case 80 << 2:
-							stage.gf_speed = 2 << 2;
-							break;
-						case 112 << 2:
-							stage.gf_speed = 1 << 2;
-							break;
-					}
-					break;
-				default:
-					break;
-			}
 			
 			//Draw stage foreground
 			if (stage.back->draw_fg != NULL)
@@ -1880,6 +1884,7 @@ void Stage_Tick(void)
 			//Tick characters
 			stage.player->tick(stage.player);
 			stage.opponent->tick(stage.opponent);
+			stage.opponent2->tick(stage.opponent2);
 			
 			//Draw stage middle
 			if (stage.back->draw_md != NULL)
@@ -1918,6 +1923,8 @@ void Stage_Tick(void)
 			Stage_SwapChars();
 			Character_Free(stage.opponent);
 			stage.opponent = NULL;
+			Character_Free(stage.opponent2);
+			stage.opponent2 = NULL;
 			Character_Free(stage.gf);
 			stage.gf = NULL;
 			

@@ -172,6 +172,17 @@ void Char_Dad_Tick(Character *character)
 {
 	Char_Dad *this = (Char_Dad*)character;
 	
+	if (stage.stage_id == StageId_1_1 && stage.song_step > 1119) {
+		this->character.focus_x = FIXED_DEC(0,1);
+		this->character.focus_y = FIXED_DEC(-75,1);
+		this->character.focus_zoom = FIXED_DEC(17,10);
+	}
+	if (stage.stage_id == StageId_1_1 && stage.song_step > 1130) {
+		this->character.focus_x = FIXED_DEC(55,1);
+		this->character.focus_y = FIXED_DEC(-75,1);
+		this->character.focus_zoom = FIXED_DEC(1,1);
+	}
+
 	//Perform idle dance
 	if ((character->pad_held & (INPUT_LEFT | INPUT_DOWN | INPUT_UP | INPUT_RIGHT)) == 0)
 		Character_PerformIdle(character);
@@ -228,8 +239,8 @@ Character *Char_Dad_New(fixed_t x, fixed_t y)
 	
 	this->character.health_i = 1;
 	
-	this->character.focus_x = FIXED_DEC(65,1);
-	this->character.focus_y = FIXED_DEC(-115,1);
+	this->character.focus_x = FIXED_DEC(55,1);
+	this->character.focus_y = FIXED_DEC(-75,1);
 	this->character.focus_zoom = FIXED_DEC(1,1);
 	
 	//Load art
