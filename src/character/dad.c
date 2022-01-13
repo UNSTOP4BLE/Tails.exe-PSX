@@ -179,14 +179,10 @@ void Char_Dad_Tick(Character *character)
 	//Animate and draw
 	if (stage.stage_id == StageId_1_1 && stage.song_step < 547)
 		Animatable_Animate(&character->animatable, (void*)this, Char_Dad_SetFrame);
-	
 	else if (stage.stage_id == StageId_1_1 && stage.song_step >= 547)
 		Animatable_Animate(&character->animatableb, (void*)this, Char_Dad_SetFrame);
-
-
-
-
-
+	else
+	   Animatable_Animate(&character->animatableb, (void*)this, Char_Dad_SetFrame);
 
 	Character_Draw(character, &this->tex, &char_dad_frame[this->frame]);
 }

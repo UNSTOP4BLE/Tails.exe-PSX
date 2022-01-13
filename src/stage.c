@@ -23,7 +23,7 @@
 #include "object/splash.h"
 
 //Stage constants
-//#define STAGE_PERFECT //Play all notes perfectly
+#define STAGE_PERFECT //Play all notes perfectly
 //#define STAGE_NOHUD //Disable the HUD
 
 //#define STAGE_FREECAM //Freecam
@@ -362,9 +362,6 @@ static void Stage_NoteCheck(PlayerState *this, u8 type)
 			note->type |= NOTE_FLAG_HIT;
 
 				this->health += 230;
-			if (this->character->spec & CHAR_SPEC_MISSANIM)
-				this->character->set_anim(this->character, note_anims[type & 0x3][2]);
-			else
 				this->character->set_anim(this->character, note_anims[type & 0x3][0]);
 			this->arrow_hitan[type & 0x3] = -1;
 
@@ -536,7 +533,7 @@ static void Stage_ProcessPlayer(PlayerState *this, Pad *pad, boolean playing)
 					break;
 				if (note_fp + stage.late_safe < stage.note_scroll)
 					continue;
-				if ((note->type & NOTE_FLAG_MINE) || (note->type & NOTE_FLAG_OPPONENT) != i)
+				if (((note->type & NOTE_FLAG_OPPONENT) != i))
 					continue;
 				
 				//Handle note hit
@@ -816,7 +813,7 @@ static void Stage_DrawNotes(void)
 				continue;
 			
 			//Miss note if player's note
-			if (!(note->type & (bot | NOTE_FLAG_HIT | NOTE_FLAG_MINE)))
+			if (!(note->type & (bot | NOTE_FLAG_HIT)))
 			{
 			
 				if (stage.mode < StageMode_Net1 || i == ((stage.mode == StageMode_Net1) ? 0 : 1))
@@ -824,7 +821,7 @@ static void Stage_DrawNotes(void)
 					//Missed note
 					Stage_CutVocal();
 					Stage_MissNote(this);
-					this->health -= 475;
+					this->health -= (note->type & NOTE_FLAG_MINE) ? 0x7000 :  475;
 					
 
 					//Send miss packet
@@ -2033,7 +2030,7 @@ void Stage_NetHit(Packet *packet)
 		this->arrow_hitan[type] = stage.step_time;
 		this->character->set_anim(this->character, note_anims[type & 0x3][(note->type & NOTE_FLAG_ALT_ANIM) != 0]);
 	}
-	else if (!(note->type & NOTE_FLAG_MINE))
+	else 
 	{
 		//Hit a note
 		Stage_StartVocal();
@@ -2065,15 +2062,6 @@ void Stage_NetHit(Packet *packet)
 					ObjectList_Add(&stage.objlist_splash, (Object*)splash);
 			}
 		}
-	}
-	else
-	{
-		//Hit a mine
-		this->arrow_hitan[type & 0x3] = -1;
-		if (this->character->spec & CHAR_SPEC_MISSANIM)
-			this->character->set_anim(this->character, note_anims[type & 0x3][2]);
-		else
-			this->character->set_anim(this->character, note_anims[type & 0x3][0]);
 	}
 }
 
