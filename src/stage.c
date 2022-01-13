@@ -23,10 +23,10 @@
 #include "object/splash.h"
 
 //Stage constants
-#define STAGE_PERFECT //Play all notes perfectly
+//#define STAGE_PERFECT //Play all notes perfectly
 //#define STAGE_NOHUD //Disable the HUD
 
-#define STAGE_FREECAM //Freecam
+//#define STAGE_FREECAM //Freecam
 
 static const fixed_t note_x[8] = {
 	//BF
@@ -360,17 +360,14 @@ static void Stage_NoteCheck(PlayerState *this, u8 type)
 			
 			//Hit the mine
 			note->type |= NOTE_FLAG_HIT;
-			
-			if (stage.stage_id == StageId_Clwn_4)
-				this->health = -0x7000;
-			else
-				this->health -= 2000;
+
+				this->health += 230;
 			if (this->character->spec & CHAR_SPEC_MISSANIM)
 				this->character->set_anim(this->character, note_anims[type & 0x3][2]);
 			else
 				this->character->set_anim(this->character, note_anims[type & 0x3][0]);
 			this->arrow_hitan[type & 0x3] = -1;
-			
+
 			#ifdef PSXF_NETWORK
 				if (stage.mode >= StageMode_Net1)
 				{
@@ -1495,8 +1492,6 @@ void Stage_Tick(void)
 	{
 		case StageState_Play:
 		{
-
-
 			FntPrint("STEP: %d", stage.song_step);
 
 			//Clear per-frame flags
@@ -1715,6 +1710,10 @@ void Stage_Tick(void)
 							else
 								opponent_anote = note_anims[note->type & 0x3][(note->type & NOTE_FLAG_ALT_ANIM) != 0];
 							note->type |= NOTE_FLAG_HIT;
+                            
+							if (stage.player_state[0].health > 150)
+							stage.player_state[0].health -= 150;
+
 						}
 					}
 					
