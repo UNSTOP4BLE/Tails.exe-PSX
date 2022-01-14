@@ -1009,7 +1009,8 @@ void Menu_Tick(void)
 				{OptType_Enum,    "GAMEMODE", &stage.mode, {.spec_enum = {COUNT_OF(gamemode_strs), gamemode_strs}}},
 				//{OptType_Boolean, "INTERPOLATION", &stage.expsync},
 				{OptType_Boolean, "GHOST TAP ", &stage.ghost, {.spec_boolean = {0}}},
-				{OptType_Boolean, "DOWNSCROLL", &stage.downscroll, {.spec_boolean = {0}}},
+				{OptType_Boolean, "DOWNSCROLL ", &stage.downscroll, {.spec_boolean = {0}}},
+				{OptType_Boolean, "HEALTH DRAIN", &stage.drain, {.spec_boolean = {0}}},
 			};
 			
 			//Initialize page

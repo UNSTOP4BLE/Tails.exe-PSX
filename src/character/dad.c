@@ -172,6 +172,10 @@ void Char_Dad_Tick(Character *character)
 {
 	Char_Dad *this = (Char_Dad*)character;
 	
+	if (stage.stage_id == StageId_1_1 && stage.song_step >= 607)
+		this->character.health_i = 2;
+
+
 	if (stage.stage_id == StageId_1_1 && stage.song_step > 1119) {
 		this->character.focus_x = FIXED_DEC(0,1);
 		this->character.focus_y = FIXED_DEC(-75,1);
@@ -237,8 +241,11 @@ Character *Char_Dad_New(fixed_t x, fixed_t y)
 	//Set character information
 	this->character.spec = 0;
 	
-	this->character.health_i = 1;
-	
+	if (stage.stage_id == StageId_1_2)
+		this->character.health_i = 2;
+	else
+		this->character.health_i = 1;
+
 	this->character.focus_x = FIXED_DEC(55,1);
 	this->character.focus_y = FIXED_DEC(-75,1);
 	this->character.focus_zoom = FIXED_DEC(1,1);

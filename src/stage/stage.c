@@ -1717,9 +1717,6 @@ void Stage_Tick(void)
 					//Handle opponent notes
 					u8 opponent_anote = CharAnim_Idle;
 					u8 opponent_snote = CharAnim_Idle;
-
-					u8 opponent2_anote = CharAnim_Idle;
-					u8 opponent2_snote = CharAnim_Idle;
 					
 					for (Note *note = stage.cur_note;; note++)
 					{
@@ -1731,14 +1728,10 @@ void Stage_Tick(void)
 						{
 							//Opponent hits note
 							Stage_StartVocal();
-							if (note->type & NOTE_FLAG_SUSTAIN) {
+							if (note->type & NOTE_FLAG_SUSTAIN)
 								opponent_snote = note_anims[note->type & 0x3][(note->type & NOTE_FLAG_ALT_ANIM) != 0];
-								opponent2_snote = note_anims[note->type & 0x3][(note->type & NOTE_FLAG_ALT_ANIM) != 0];
-							}
-							else {
+							else
 								opponent_anote = note_anims[note->type & 0x3][(note->type & NOTE_FLAG_ALT_ANIM) != 0];
-								opponent2_anote = note_anims[note->type & 0x3][(note->type & NOTE_FLAG_ALT_ANIM) != 0];
-							}
 							note->type |= NOTE_FLAG_HIT;
                             
 							if (stage.drain == 1) {

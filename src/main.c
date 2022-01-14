@@ -50,6 +50,8 @@ static u8 malloc_heap[0x1B0000];
 //Entry point
 int main(int argc, char **argv)
 {
+	stage.drain = true;
+
 	//Remember arguments
 	my_argc = argc;
 	my_argv = argv;
