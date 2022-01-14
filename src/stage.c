@@ -490,7 +490,7 @@ static void Stage_ProcessPlayer(PlayerState *this, Pad *pad, boolean playing)
 	#ifndef STAGE_PERFECT
 		if (playing)
 		{
-			u8 i = (this->character <= stage.opponent) ? NOTE_FLAG_OPPONENT : 0;
+			u8 i = (this->character == stage.opponent) ? NOTE_FLAG_OPPONENT : 0;
 			
 			this->pad_held = this->character->pad_held = pad->held;
 			this->pad_press = pad->press;
@@ -524,7 +524,7 @@ static void Stage_ProcessPlayer(PlayerState *this, Pad *pad, boolean playing)
 		//Do perfect note checks
 		if (playing)
 		{
-			u8 i = (this->character <= stage.opponent) ? NOTE_FLAG_OPPONENT : 0;
+			u8 i = (this->character == stage.opponent) ? NOTE_FLAG_OPPONENT : 0;
 			
 			u8 hit[4] = {0, 0, 0, 0};
 			for (Note *note = stage.cur_note;; note++)
