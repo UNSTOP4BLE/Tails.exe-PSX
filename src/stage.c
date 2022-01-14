@@ -490,7 +490,7 @@ static void Stage_ProcessPlayer(PlayerState *this, Pad *pad, boolean playing)
 	#ifndef STAGE_PERFECT
 		if (playing)
 		{
-			u8 i = (this->character == stage.opponent) ? NOTE_FLAG_OPPONENT : 0;
+			u8 i = (this->character <= stage.opponent) ? NOTE_FLAG_OPPONENT : 0;
 			
 			this->pad_held = this->character->pad_held = pad->held;
 			this->pad_press = pad->press;
@@ -524,7 +524,7 @@ static void Stage_ProcessPlayer(PlayerState *this, Pad *pad, boolean playing)
 		//Do perfect note checks
 		if (playing)
 		{
-			u8 i = (this->character == stage.opponent) ? NOTE_FLAG_OPPONENT : 0;
+			u8 i = (this->character <= stage.opponent) ? NOTE_FLAG_OPPONENT : 0;
 			
 			u8 hit[4] = {0, 0, 0, 0};
 			for (Note *note = stage.cur_note;; note++)
@@ -1026,7 +1026,6 @@ static void Stage_LoadOpponent(void)
 	//Load opponent character
 	Character_Free(stage.opponent);
 	stage.opponent = stage.stage_def->ochar.new(stage.stage_def->ochar.x, stage.stage_def->ochar.y);
-	stage.opponent = stage.stage_def->ochar.new(stage.stage_def->ochar.x, stage.stage_def->ochar.y);
 }
 
 static void Stage_LoadOpponent2(void)
@@ -1034,7 +1033,6 @@ static void Stage_LoadOpponent2(void)
 	//Load opponent character
 	Character_Free(stage.opponent2);
 	if (stage.stage_def->ochar2.new != NULL) {
-		stage.opponent2 = stage.stage_def->ochar2.new(stage.stage_def->ochar2.x, stage.stage_def->ochar2.y);
 		stage.opponent2 = stage.stage_def->ochar2.new(stage.stage_def->ochar2.x, stage.stage_def->ochar2.y);
 	}
 	else
@@ -1192,6 +1190,8 @@ static void Stage_LoadMusic(void)
 	//Offset sing ends
 	stage.player->sing_end -= stage.note_scroll;
 	stage.opponent->sing_end -= stage.note_scroll;
+	if (stage.opponent2 != NULL)
+	stage.opponent2->sing_end -= stage.note_scroll;
 	if (stage.gf != NULL)
 		stage.gf->sing_end -= stage.note_scroll;
 	
@@ -1223,6 +1223,7 @@ static void Stage_LoadState(void)
 	
 	stage.player_state[0].character = stage.player;
 	stage.player_state[1].character = stage.opponent;
+	if (stage.opponent2 != NULL)
 	stage.player_state[1].character = stage.opponent2;
 	for (int i = 0; i < 2; i++)
 	{
@@ -1278,7 +1279,11 @@ void Stage_Load(StageId id, StageDiff difficulty, boolean story)
 	
 	//Initialize camera
 	if (stage.cur_section->flag & SECTION_FLAG_OPPFOCUS)
+	{
 		Stage_FocusCharacter(stage.opponent, FIXED_UNIT);
+		if (stage.opponent2 != NULL)
+		Stage_FocusCharacter(stage.opponent2, FIXED_UNIT);
+	}
 	else
 		Stage_FocusCharacter(stage.player, FIXED_UNIT);
 	stage.camera.x = stage.camera.tx;
@@ -1386,7 +1391,7 @@ static boolean Stage_NextLoad(void)
 		{
 			Stage_LoadOpponent2();
 		}
-		else
+		else if (stage.opponent2 != NULL)
 		{
 			stage.opponent2->x = stage.stage_def->ochar2.x;
 			stage.opponent2->y = stage.stage_def->ochar2.y;
@@ -1704,7 +1709,12 @@ void Stage_Tick(void)
 			
 			//Scroll camera
 			if (stage.cur_section->flag & SECTION_FLAG_OPPFOCUS)
+			{
 				Stage_FocusCharacter(stage.opponent, FIXED_UNIT / 24);
+
+                if (stage.opponent2 != NULL)
+				Stage_FocusCharacter(stage.opponent2, FIXED_UNIT / 24);
+			}
 			else
 				Stage_FocusCharacter(stage.player, FIXED_UNIT / 24);
 			Stage_ScrollCamera();
@@ -1744,9 +1754,17 @@ void Stage_Tick(void)
 					}
 					
 					if (opponent_anote != CharAnim_Idle)
+					{
 						stage.opponent->set_anim(stage.opponent, opponent_anote);
+						if (stage.opponent2 != NULL)
+						stage.opponent2->set_anim(stage.opponent2, opponent_anote);
+					}
 					else if (opponent_snote != CharAnim_Idle)
+					{
 						stage.opponent->set_anim(stage.opponent, opponent_snote);
+						if (stage.opponent2 != NULL)
+						stage.opponent2->set_anim(stage.opponent2, opponent_anote);
+					}
 					break;
 				}
 				case StageMode_2P:
@@ -1894,6 +1912,7 @@ void Stage_Tick(void)
 			//Tick characters
 			stage.player->tick(stage.player);
 			stage.opponent->tick(stage.opponent);
+			if (stage.opponent2 != NULL)
 			stage.opponent2->tick(stage.opponent2);
 			
 			//Draw stage middle
