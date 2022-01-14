@@ -51,6 +51,8 @@ static const u8 note_anims[4][3] = {
 };
 
 //Stage definitions
+int icony = 0;
+
 #include "character/bf.h"
 #include "character/bfweeb.h"
 #include "character/dad.h"
@@ -697,17 +699,17 @@ static void Stage_DrawHealth(s16 health, u8 i, s8 ox)
 	//Check if we should use 'dying' frame
 	s8 dying;
 	if (ox < 0)
-		dying = (health >= 18000) * 24;
+		dying = (health >= 18000) * 50;
 	else
-		dying = (health <= 2000) * 24;
+		dying = (health <= 2000) * 50;
 	
 	//Get src and dst
 	fixed_t hx = (128 << FIXED_SHIFT) * (10000 - health) / 10000;
 	RECT src = {
-		(i % 5) * 48 + dying,
-		16 + (i / 5) * 24,
-		24,
-		24
+		(i % 2) * 100 + dying,
+		16 + (i / 2) * 50,
+		50,
+		50
 	};
 	RECT_FIXED dst = {
 		hx + ox * FIXED_DEC(11,1) - FIXED_DEC(12,1),
@@ -1861,8 +1863,16 @@ void Stage_Tick(void)
 				Stage_DrawHealth(stage.player_state[0].health, stage.opponent->health_i, -1);
 				
 				//Draw health bar
-				RECT health_fill = {0, 0, 256 - (256 * stage.player_state[0].health / 20000), 8};
+				if (stage.stage_id == StageId_1_2) 
+					icony = 166;
+				else if (stage.stage_id == StageId_1_3) 
+					icony = 174;
+				else 
+					icony = 0;
+
+				RECT health_fill = {0, icony, 256 - (256 * stage.player_state[0].health / 20000), 8};
 				RECT health_back = {0, 8, 256, 8};
+
 				RECT_FIXED health_dst = {FIXED_DEC(-128,1), (SCREEN_HEIGHT2 - 32) << FIXED_SHIFT, 0, FIXED_DEC(8,1)};
 				if (stage.downscroll)
 					health_dst.y = -health_dst.y - health_dst.h;
