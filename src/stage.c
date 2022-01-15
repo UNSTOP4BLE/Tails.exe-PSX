@@ -1752,7 +1752,7 @@ void Stage_Tick(void)
 					{
 						stage.opponent->set_anim(stage.opponent, opponent_snote);
 						if (stage.opponent2 != NULL)
-						stage.opponent2->set_anim(stage.opponent2, opponent_anote);
+						stage.opponent2->set_anim(stage.opponent2, opponent_snote);
 					}
 					break;
 				}
