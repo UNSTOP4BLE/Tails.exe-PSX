@@ -93,6 +93,12 @@ void Char_spook_SetFrame(void *user, u8 frame)
 void Char_spook_Tick(Character *character)
 {
 	Char_spook *this = (Char_spook*)character;
+	
+	if (stage.stage_id == StageId_1_3 && stage.song_step >= 1023)
+	this->character.health_i = 2;
+
+	if (stage.stage_id == StageId_1_3 && stage.song_step >= 1535)
+	this->character.health_i = 4;
 
 	//Perform idle dance
 	if ((character->pad_held & (INPUT_LEFT | INPUT_DOWN | INPUT_UP | INPUT_RIGHT)) == 0)
@@ -100,6 +106,10 @@ void Char_spook_Tick(Character *character)
 	
 	 Animatable_Animate(&character->animatable, (void*)this, Char_spook_SetFrame);
 
+	if (stage.stage_id == StageId_1_3 && stage.song_step <= 1023)
+	Character_Draw(character, &this->tex, &char_spook_frame[this->frame]);
+
+	if (stage.stage_id == StageId_1_3 && stage.song_step >= 1535)
 	Character_Draw(character, &this->tex, &char_spook_frame[this->frame]);
 }
 

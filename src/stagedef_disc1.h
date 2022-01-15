@@ -30,11 +30,11 @@
 		1, 2,
 		XA_Fresh, 2,
 		
-		StageId_1_3, STAGE_LOAD_STAGE | STAGE_LOAD_OPPONENT | STAGE_LOAD_OPPONENT2
+		StageId_1_3, STAGE_LOAD_STAGE | STAGE_LOAD_OPPONENT | STAGE_LOAD_OPPONENT2 | STAGE_LOAD_PLAYER
 	},
 	{ //StageId_1_3 (Dadbattle)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(60 + 90,1),  FIXED_DEC(100,1)},
+		{Char_bfb_New,    FIXED_DEC(60 + 90,1),  FIXED_DEC(100,1)},
 		{Char_spook_New, FIXED_DEC(-120 + 160,1),  FIXED_DEC(100,1)},
 		{Char_tailsd_New, FIXED_DEC(-120 + 90,1),  FIXED_DEC(100,1)},
 		{Char_GF_New,     FIXED_DEC(0 + 90,1),  FIXED_DEC(-10,1)},

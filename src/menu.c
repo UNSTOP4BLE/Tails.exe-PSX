@@ -22,7 +22,6 @@
 #include "loadscr.h"
 
 #include "stage.h"
-#include "character/gf.h"
 
 //Menu messages
 static const char *funny_messages[][2] = {
@@ -134,10 +133,8 @@ static struct
 	} page_param;
 	
 	//Menu assets
-	Gfx_Tex tex_back, tex_ng, tex_story, tex_title;
+	Gfx_Tex tex_back, tex_ng, tex_story, tex_title, tex_bg;
 	FontData font_bold, font_arial;
-	
-	Character *gf; //Title Girlfriend
 } menu;
 
 #ifdef PSXF_NETWORK
@@ -254,15 +251,14 @@ void Menu_Load(MenuPage page)
 	Gfx_LoadTex(&menu.tex_ng,    Archive_Find(menu_arc, "ng.tim"),    0);
 	Gfx_LoadTex(&menu.tex_story, Archive_Find(menu_arc, "story.tim"), 0);
 	Gfx_LoadTex(&menu.tex_title, Archive_Find(menu_arc, "title.tim"), 0);
+	Gfx_LoadTex(&menu.tex_bg, Archive_Find(menu_arc, "bg.tim"), 0);
 	Mem_Free(menu_arc);
 	
 	FontData_Load(&menu.font_bold, Font_Bold);
 	FontData_Load(&menu.font_arial, Font_Arial);
 	
-	menu.gf = Char_GF_New(FIXED_DEC(62,1), FIXED_DEC(-12,1));
 	stage.camera.x = stage.camera.y = FIXED_DEC(0,1);
 	stage.camera.bzoom = FIXED_UNIT;
-	stage.gf_speed = 4;
 	
 	//Initialize menu state
 	menu.select = menu.next_select = 0;
@@ -291,15 +287,15 @@ void Menu_Load(MenuPage page)
 	//Play menu music
 	Audio_PlayXA_Track(XA_GettinFreaky, 0x40, 0, 1);
 	Audio_WaitPlayXA();
-	
+
 	//Set background colour
 	Gfx_SetClear(0, 0, 0);
+
 }
 
 void Menu_Unload(void)
 {
-	//Free title Girlfriend
-	Character_Free(menu.gf);
+
 }
 
 void Menu_ToStage(StageId id, StageDiff diff, boolean story)
@@ -450,13 +446,13 @@ void Menu_Tick(void)
 				FIXED_DEC(97,100),
 			};
 			fixed_t logo_scale = logo_scales[(menu.page_state.title.logo_bump * 24) >> FIXED_SHIFT];
-			u32 x_rad = (logo_scale * (176 >> 1)) >> FIXED_SHIFT;
-			u32 y_rad = (logo_scale * (112 >> 1)) >> FIXED_SHIFT;
+			u32 x_rad = (logo_scale * (206 >> 1)) >> FIXED_SHIFT;
+			u32 y_rad = (logo_scale * (142 >> 1)) >> FIXED_SHIFT;
 			
-			RECT logo_src = {0, 0, 176, 112};
+			RECT logo_src = {10, 0, 155, 108};
 			RECT logo_dst = {
-				100 - x_rad + (SCREEN_WIDEADD2 >> 1),
-				68 - y_rad,
+				160 - x_rad + (SCREEN_WIDEADD2 >> 1),
+				90 - y_rad,
 				x_rad << 1,
 				y_rad << 1
 			};
@@ -484,9 +480,12 @@ void Menu_Tick(void)
 				RECT press_src = {0, (animf_count & 1) ? 144 : 112, 256, 32};
 				Gfx_BlitTex(&menu.tex_title, &press_src, (SCREEN_WIDTH - 256) / 2, SCREEN_HEIGHT - 48);
 			}
-			
-			//Draw Girlfriend
-			menu.gf->tick(menu.gf);
+			//Load loading screen texture
+			RECT bg_src = {0, 0, 255, 255};
+			RECT bg_dst = {(SCREEN_WIDTH - 320) >> 1, (SCREEN_HEIGHT - 240) >> 1, 320, 240};
+
+			Gfx_DrawTex(&menu.tex_bg, &bg_src, &bg_dst);
+
 			break;
 		}
 		case MenuPage_Main:
@@ -1011,6 +1010,7 @@ void Menu_Tick(void)
 				{OptType_Boolean, "GHOST TAP ", &stage.ghost, {.spec_boolean = {0}}},
 				{OptType_Boolean, "DOWNSCROLL ", &stage.downscroll, {.spec_boolean = {0}}},
 				{OptType_Boolean, "HEALTH DRAIN", &stage.drain, {.spec_boolean = {0}}},
+				{OptType_Boolean, "BOTPLAY", &stage.botplay, {.spec_boolean = {0}}},
 			};
 			
 			//Initialize page

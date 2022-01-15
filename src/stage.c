@@ -23,7 +23,6 @@
 #include "object/splash.h"
 
 //Stage constants
-#define STAGE_PERFECT //Play all notes perfectly
 //#define STAGE_NOHUD //Disable the HUD
 
 //#define STAGE_FREECAM //Freecam
@@ -54,6 +53,7 @@ static const u8 note_anims[4][3] = {
 int icony = 0;
 
 #include "character/bf.h"
+#include "character/bfb.h"
 #include "character/dad.h"
 #include "character/spook.h"
 #include "character/tailsd.h"
@@ -473,7 +473,7 @@ static void Stage_SustainCheck(PlayerState *this, u8 type)
 static void Stage_ProcessPlayer(PlayerState *this, Pad *pad, boolean playing)
 {
 	//Handle player note presses
-	#ifndef STAGE_PERFECT
+	if (stage.botplay == 0) {
 		if (playing)
 		{
 			u8 i = (this->character == stage.opponent) ? NOTE_FLAG_OPPONENT : 0;
@@ -504,9 +504,9 @@ static void Stage_ProcessPlayer(PlayerState *this, Pad *pad, boolean playing)
 			this->pad_held = this->character->pad_held = 0;
 			this->pad_press = 0;
 		}
-	#endif
+	}
 	
-	#ifdef STAGE_PERFECT
+	if (stage.botplay == 1) {
 		//Do perfect note checks
 		if (playing)
 		{
@@ -567,7 +567,7 @@ static void Stage_ProcessPlayer(PlayerState *this, Pad *pad, boolean playing)
 			this->pad_held = this->character->pad_held = 0;
 			this->pad_press = 0;
 		}
-	#endif
+	}
 }
 
 //Stage drawing functions

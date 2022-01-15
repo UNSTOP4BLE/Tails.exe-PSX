@@ -108,7 +108,13 @@ void Char_tailsd_SetFrame(void *user, u8 frame)
 void Char_tailsd_Tick(Character *character)
 {
 	Char_tailsd *this = (Char_tailsd*)character;
+	
+	if (stage.stage_id == StageId_1_3 && stage.song_step >= 1023)
+		this->character.focus_y = FIXED_DEC(-75,1);
 
+	if  (stage.stage_id == StageId_1_3 && stage.song_step >= 1535)
+		this->character.focus_y = FIXED_DEC(-105,1);
+		
 	//Perform idle dance
 	if ((character->pad_held & (INPUT_LEFT | INPUT_DOWN | INPUT_UP | INPUT_RIGHT)) == 0)
 		Character_PerformIdle(character);
@@ -116,6 +122,7 @@ void Char_tailsd_Tick(Character *character)
 	//Animate and draw
 	Animatable_Animate(&character->animatable, (void*)this, Char_tailsd_SetFrame);
 
+	if (stage.stage_id == StageId_1_3 && stage.song_step >= 1023)
 	Character_Draw(character, &this->tex, &char_tailsd_frame[this->frame]);
 }
 
@@ -156,13 +163,10 @@ Character *Char_tailsd_New(fixed_t x, fixed_t y)
 	//Set character information
 	this->character.spec = 0;
 	
-	if (stage.stage_id == StageId_1_2)
-		this->character.health_i = 2;
-	else
-		this->character.health_i = 1;
+	this->character.health_i = 1;
 
 	this->character.focus_x = FIXED_DEC(55,1);
-	this->character.focus_y = FIXED_DEC(-75,1);
+	this->character.focus_y = FIXED_DEC(-105,1);
 	this->character.focus_zoom = FIXED_DEC(1,1);
 	
 	//Load art
