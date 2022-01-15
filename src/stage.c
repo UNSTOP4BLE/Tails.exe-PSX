@@ -26,7 +26,7 @@
 #define STAGE_PERFECT //Play all notes perfectly
 //#define STAGE_NOHUD //Disable the HUD
 
-#define STAGE_FREECAM //Freecam
+//#define STAGE_FREECAM //Freecam
 
 static const fixed_t note_x[8] = {
 	//BF
@@ -56,6 +56,7 @@ int icony = 0;
 #include "character/bf.h"
 #include "character/dad.h"
 #include "character/spook.h"
+#include "character/tailsd.h"
 #include "character/gf.h"
 
 #include "stage/dummy.h"

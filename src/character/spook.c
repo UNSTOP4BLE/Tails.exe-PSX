@@ -140,7 +140,7 @@ Character *Char_spook_New(fixed_t x, fixed_t y)
 	//Set character information
 	this->character.spec = 0;
 	
-	this->character.health_i = 1;
+	this->character.health_i = 3;
 
 	this->character.focus_x = FIXED_DEC(55,1);
 	this->character.focus_y = FIXED_DEC(-75,1);

@@ -131,7 +131,7 @@ static const CharFrame char_dad_frame[] = {
 };
 
 static const Animation char_dad_anim[CharAnim_Max] = {
-	{2, (const u8[]){ 1, 2, 3, 4, 5, 6, 7, 8, 9, ASCR_BACK, 0}}, //CharAnim_Idle
+	{2, (const u8[]){ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ASCR_BACK, 0}}, //CharAnim_Idle
 	{2, (const u8[]){ 10, 11, 12, 13, 14, 15, ASCR_BACK, 0}},         //CharAnim_Left
 	{2, (const u8[]){ 10, 11, 12, 13, 14, 15, ASCR_BACK, 0}},   //CharAnim_LeftAlt
 	{2, (const u8[]){ 16, 17, 18, 19, 20, 21, ASCR_BACK, 0}},         //CharAnim_Down

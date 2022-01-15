@@ -30,17 +30,17 @@
 		1, 2,
 		XA_Fresh, 2,
 		
-		StageId_1_3, STAGE_LOAD_STAGE
+		StageId_1_3, STAGE_LOAD_STAGE | STAGE_LOAD_OPPONENT | STAGE_LOAD_OPPONENT2
 	},
 	{ //StageId_1_3 (Dadbattle)
 		//Characters
-		{Char_BF_New,    FIXED_DEC(60,1),  FIXED_DEC(100,1)},
-		{Char_spook_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
-		{Char_Dad_New, FIXED_DEC(-120,1),  FIXED_DEC(100,1)},
-		{Char_GF_New,     FIXED_DEC(0,1),  FIXED_DEC(-10,1)},
+		{Char_BF_New,    FIXED_DEC(60 + 90,1),  FIXED_DEC(100,1)},
+		{Char_spook_New, FIXED_DEC(-120 + 160,1),  FIXED_DEC(100,1)},
+		{Char_tailsd_New, FIXED_DEC(-120 + 90,1),  FIXED_DEC(100,1)},
+		{Char_GF_New,     FIXED_DEC(0 + 90,1),  FIXED_DEC(-10,1)},
 		
 		//Stage background
-		Back_Week1_New,
+		Back_Week3_New,
 		
 		//Song info
 		{FIXED_DEC(1,1),FIXED_DEC(28,10),FIXED_DEC(1,1)},
@@ -57,7 +57,7 @@
 		{NULL,   FIXED_DEC(0,1),  FIXED_DEC(-10,1)},
 		
 		//Stage background
-		Back_Week1_New,
+		Back_Dummy_New,
 		
 		//Song info
 		{FIXED_DEC(1,1),FIXED_DEC(28,10),FIXED_DEC(1,1)},
