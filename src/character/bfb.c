@@ -11,6 +11,7 @@
 #include "../stage.h"
 #include "../random.h"
 #include "../main.h"
+int throw2;
 
 //Boyfriend skull fragments
 static SkullFragment char_bfb_skull[15] = {
@@ -152,7 +153,7 @@ static const Animation char_bfb_anim[PlayerAnim_Max] = {
 	{1, (const u8[]){ 9, 24, 24, 25, ASCR_BACK, 1}},     //PlayerAnim_UpMiss
 	{1, (const u8[]){11, 26, 26, 27, ASCR_BACK, 1}},     //PlayerAnim_RightMiss
 	
-	{2, (const u8[]){13, 14, 15, 16, 17, 18, 19, ASCR_BACK, 0}},         //PlayerAnim_Peace
+	{2, (const u8[]){13, 14, 15, 16, 17, 18, 19, ASCR_BACK, 1}},         //PlayerAnim_Peace
 	{2, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},      //PlayerAnim_Sweat
 	
 	{5, (const u8[]){28, 29, 30, 31, 31, 31, 31, 31, 31, 31, ASCR_CHGANI, PlayerAnim_Dead1}}, //PlayerAnim_Dead0
@@ -216,23 +217,33 @@ void Char_bfb_Tick(Character *character)
 			(stage.song_step & 0x7) == 0)
 			character->set_anim(character, CharAnim_Idle);
 		
-		//Stage specific animations
+		 //reset throw mic
+			if (character->animatable.anim == CharAnim_Left ||
+	       character->animatable.anim == CharAnim_LeftAlt ||
+	       character->animatable.anim == CharAnim_Down ||
+	       character->animatable.anim == CharAnim_DownAlt ||
+	       character->animatable.anim == CharAnim_Up ||
+	       character->animatable.anim == CharAnim_UpAlt ||
+	       character->animatable.anim == CharAnim_Right ||
+	       character->animatable.anim == CharAnim_RightAlt ||
+	       ((character->spec & CHAR_SPEC_MISSANIM) &&
+	       (character->animatable.anim == PlayerAnim_LeftMiss ||
+	       character->animatable.anim == PlayerAnim_DownMiss ||
+	       character->animatable.anim == PlayerAnim_UpMiss ||
+	       character->animatable.anim == PlayerAnim_RightMiss)))
+		 throw2 = 0;
+
+		
+		//mic animation
 		if (stage.note_scroll >= 0)
 		{
-			switch (stage.stage_id)
+		  if (throw2 == 0 && character->animatable.anim == CharAnim_Idle)
 			{
-				case StageId_1_4: //Tutorial peace
-					if (stage.song_step > 64 && stage.song_step < 192 && (stage.song_step & 0x3F) == 60)
-						character->set_anim(character, PlayerAnim_Peace);
-					break;
-				case StageId_1_1: //Bopeebo peace
-					if ((stage.song_step & 0x1F) == 28)
-						character->set_anim(character, PlayerAnim_Peace);
-					break;
-				default:
-					break;
+	       throw2 = 1;
+		   character->set_anim(character, PlayerAnim_Peace);
 			}
-		}
+
+	     }
 	}
 	
 	//Retry screen
@@ -385,6 +396,7 @@ void Char_bfb_Free(Character *character)
 {
 	Char_bfb *this = (Char_bfb*)character;
 	
+	throw2 = 0;
 	//Free art
 	Mem_Free(this->arc_main);
 	Mem_Free(this->arc_dead);
