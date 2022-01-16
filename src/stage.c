@@ -58,6 +58,7 @@ int icony = 0;
 #include "character/spook.h"
 #include "character/tailsd.h"
 #include "character/gf.h"
+#include "character/gfb.h"
 
 #include "stage/dummy.h"
 #include "stage/week1.h"
@@ -678,6 +679,7 @@ void Stage_BlendTexArb(Gfx_Tex *tex, const RECT *src, const POINT_FIXED *p0, con
 	
 	Gfx_BlendTexArb(tex, src, &s0, &s1, &s2, &s3, mode);
 }
+
 
 //Stage HUD functions
 static void Stage_DrawHealth(s16 health, u8 i, s8 ox)
@@ -1510,7 +1512,36 @@ void Stage_Tick(void)
 	switch (stage.state)
 	{
 		case StageState_Play:
-		{
+		{		
+			//hardcoded stuff
+			RECT white_src = {225, 229, 31, 27};
+			RECT_FIXED white_dst = {
+				FIXED_DEC(-200,1),
+				FIXED_DEC(-150,1),
+				FIXED_DEC(500,1),
+				FIXED_DEC(500,1)
+			};	
+
+			if (stage.stage_id == StageId_1_3 && stage.song_step >= 1023 && stage.song_step <= 1028)
+				Stage_DrawTex(&stage.tex_hud1, &white_src, &white_dst, stage.camera.bzoom);
+
+			if (stage.stage_id == StageId_1_3 && stage.song_step >= 1535 && stage.song_step <= 1540)
+				Stage_DrawTex(&stage.tex_hud1, &white_src, &white_dst, stage.camera.bzoom);
+
+			//botplay texture thing
+			RECT bot_src = {0, 242, 143, 14};
+			RECT_FIXED bot_dst = {
+				FIXED_DEC(-74,1),
+				FIXED_DEC(50,1),
+				FIXED_DEC(143,1),
+				FIXED_DEC(14,1)
+			};	
+
+			if (stage.botplay == 1)
+				Stage_DrawTex(&stage.tex_hud1, &bot_src, &bot_dst, stage.camera.bzoom);
+
+
+
 			FntPrint("STEP: %d", stage.song_step);
 
 			//Clear per-frame flags

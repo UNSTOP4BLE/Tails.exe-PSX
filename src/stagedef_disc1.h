@@ -37,7 +37,7 @@
 		{Char_bfb_New,    FIXED_DEC(60 + 90,1),  FIXED_DEC(100,1)},
 		{Char_spook_New, FIXED_DEC(-120 + 160,1),  FIXED_DEC(100,1)},
 		{Char_tailsd_New, FIXED_DEC(-120 + 90,1),  FIXED_DEC(100,1)},
-		{Char_GF_New,     FIXED_DEC(0 + 90,1),  FIXED_DEC(-10,1)},
+		{Char_gfb_New,     FIXED_DEC(0 + 90,1),  FIXED_DEC(-10,1)},
 		
 		//Stage background
 		Back_Week3_New,

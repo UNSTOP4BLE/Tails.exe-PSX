@@ -14,7 +14,9 @@ all: \
 	iso/spook/main.arc \
 	iso/tailsd/main.arc \
 	iso/gf/main.arc \
+	iso/gfb/main.arc \
 	iso/gf/speaker.tim \
+	iso/gfb/speakerb.tim \
 	iso/week1/back.arc \
 	iso/week2/back.arc \
 	iso/week3/back.arc \
@@ -46,6 +48,8 @@ iso/tailsd/main.arc: iso/tailsd/idle0.tim iso/tailsd/idle1.tim iso/tailsd/left.t
 
 # GF
 iso/gf/main.arc: iso/gf/gf0.tim iso/gf/gf1.tim iso/gf/gf2.tim
+
+iso/gfb/main.arc: iso/gfb/gf0.tim iso/gfb/gf1.tim iso/gfb/gf2.tim
 
 # Week 1
 iso/week1/back.arc: iso/week1/back0.tim iso/week1/back1.tim iso/week1/back2.tim iso/week1/back3.tim

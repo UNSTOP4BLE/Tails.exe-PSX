@@ -52,6 +52,9 @@ int main(int argc, char **argv)
 {
 	stage.drain = true;
 
+	//botplay
+	stage.botplay = true;
+
 	//Remember arguments
 	my_argc = argc;
 	my_argv = argv;

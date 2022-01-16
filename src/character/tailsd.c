@@ -82,13 +82,13 @@ static const CharFrame char_tailsd_frame[] = {
 static const Animation char_tailsd_anim[CharAnim_Max] = {
 	{2, (const u8[]){ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, ASCR_BACK, 0}}, //CharAnim_Idle
 	{2, (const u8[]){ 10, 11, 12, 13, 14, 15, ASCR_BACK, 0}},         //CharAnim_Left
-	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_LeftAlt
+	{2, (const u8[]){ 10, 11, 12, 13, 14, 15, ASCR_BACK, 0}},   //CharAnim_LeftAlt
 	{2, (const u8[]){ 16, 17, 18, 19, 20, 21, ASCR_BACK, 0}},         //CharAnim_Down
-	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_DownAlt
+	{2, (const u8[]){ 16, 17, 18, 19, 20, 21, ASCR_BACK, 0}},   //CharAnim_DownAlt
 	{2, (const u8[]){ 22, 23, 24, 25, 26, 27, ASCR_BACK, 0}},         //CharAnim_Up
-	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_UpAlt
+	{2, (const u8[]){ 22, 23, 24, 25, 26, 27, ASCR_BACK, 0}},   //CharAnim_UpAlt
 	{2, (const u8[]){ 28, 29, 30, 31, 32, 33, ASCR_BACK, 0}},         //CharAnim_Right
-	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_RightAlt
+	{2, (const u8[]){ 28, 29, 30, 31, 32, 33, ASCR_BACK, 0}},   //CharAnim_RightAlt
 };
 //tailsd character function
 void Char_tailsd_SetFrame(void *user, u8 frame)

@@ -66,13 +66,13 @@ static const CharFrame char_spook_frame[] = {
 static const Animation char_spook_anim[CharAnim_Max] = {
 	{2, (const u8[]){ 0, 1, 2, 3, ASCR_BACK, 0}}, //CharAnim_Idle
 	{2, (const u8[]){ 4, 5, ASCR_BACK, 0}},         //CharAnim_Left
-	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_LeftAlt
+	{2, (const u8[]){ 4, 5, ASCR_BACK, 0}},   //CharAnim_LeftAlt
 	{2, (const u8[]){ 6, 7, ASCR_BACK, 0}},         //CharAnim_Down
-	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_DownAlt
+	{2, (const u8[]){ 6, 7, ASCR_BACK, 0}},   //CharAnim_DownAlt
 	{2, (const u8[]){ 8, 9, ASCR_BACK, 0}},         //CharAnim_Up
-	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_UpAlt
+	{2, (const u8[]){ 8, 9, ASCR_BACK, 0}},   //CharAnim_UpAlt
 	{2, (const u8[]){ 10, 11, ASCR_BACK, 0}},         //CharAnim_Right
-	{0, (const u8[]){ASCR_CHGANI, CharAnim_Idle}},   //CharAnim_RightAlt
+	{2, (const u8[]){ 10, 11, ASCR_BACK, 0}},   //CharAnim_RightAlt
 };
 
 //spook character functions

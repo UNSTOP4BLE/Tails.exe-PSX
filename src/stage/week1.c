@@ -30,6 +30,19 @@ void Back_Week1_DrawFG(StageBack *back)
 	
 	fixed_t fx, fy;	
 
+	if (stage.stage_id == StageId_1_1 && stage.song_step >= 602 && stage.song_step <= 607) {
+	//Draw white
+	RECT white_src = {25, 56, 3, 3};
+	RECT_FIXED white_dst = {
+		FIXED_DEC(-170,1),
+		FIXED_DEC(-125,1),
+		FIXED_DEC(500,1),
+		FIXED_DEC(300,1)
+	};
+	
+	Stage_DrawTex(&this->tex_back0, &white_src, &white_dst, stage.camera.bzoom);
+	}
+
 	if (stage.stage_id == StageId_1_1 && stage.song_step >= 528 && stage.song_step <= 607) {
 	//Draw black
 	RECT black_src = {0, 235, 1, 1};
