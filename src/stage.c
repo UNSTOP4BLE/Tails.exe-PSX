@@ -59,6 +59,7 @@ int icony = 0;
 #include "character/tailsd.h"
 #include "character/gf.h"
 #include "character/gfb.h"
+#include "character/cough.h"
 
 #include "stage/dummy.h"
 #include "stage/week1.h"

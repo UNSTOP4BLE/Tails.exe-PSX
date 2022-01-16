@@ -32,6 +32,7 @@ SRCS = src/main.c \
        src/character/tailsd.c \
        src/character/gf.c \
        src/character/gfb.c \
+       src/character/cough.c \
        src/object.c \
        src/object/combo.c \
        src/object/splash.c \

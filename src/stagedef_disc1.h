@@ -2,7 +2,7 @@
 		//Characters
 		{Char_BF_New,    FIXED_DEC(60 + 90,1),  FIXED_DEC(100,1)},
 		{Char_Dad_New, FIXED_DEC(-120 + 130,1),  FIXED_DEC(100,1)},
-		{NULL, FIXED_DEC(-120 + 130,1),  FIXED_DEC(100,1)},
+		{NULL},
 		{Char_GF_New,     FIXED_DEC(0 + 90,1),  FIXED_DEC(-10,1)},
 		
 		//Stage background
@@ -19,7 +19,7 @@
 		//Characters
 		{Char_BF_New,    FIXED_DEC(60 + 90,1),  FIXED_DEC(100,1)},
 		{Char_Dad_New, FIXED_DEC(-120 + 130,1),  FIXED_DEC(100,1)},
-		{NULL, FIXED_DEC(-120 + 130,1),  FIXED_DEC(100,1)},
+		{NULL},
 		{Char_GF_New,     FIXED_DEC(0 + 90,1),  FIXED_DEC(-10,1)},
 		
 		//Stage background
@@ -30,7 +30,7 @@
 		1, 2,
 		XA_Fresh, 2,
 		
-		StageId_1_3, STAGE_LOAD_STAGE | STAGE_LOAD_OPPONENT | STAGE_LOAD_OPPONENT2 | STAGE_LOAD_PLAYER
+		StageId_1_3, STAGE_LOAD_STAGE | STAGE_LOAD_OPPONENT | STAGE_LOAD_OPPONENT2 | STAGE_LOAD_PLAYER | STAGE_LOAD_GIRLFRIEND
 	},
 	{ //StageId_1_3 (Dadbattle)
 		//Characters
@@ -51,10 +51,10 @@
 	},
 	{ //StageId_1_4 (Tutorial)
 		//Characters
-		{Char_BF_New, FIXED_DEC(60,1),  FIXED_DEC(100,1)},
-		{Char_Dad_New,  FIXED_DEC(0,1),  FIXED_DEC(-15,1)}, //TODO
-		{NULL, FIXED_DEC(-120 + 130,1),  FIXED_DEC(100,1)},
-		{NULL,   FIXED_DEC(0,1),  FIXED_DEC(-10,1)},
+		{Char_BF_New, FIXED_DEC(90,1),  FIXED_DEC(100,1)},
+		{Char_cough_New,  FIXED_DEC(-10,1),  FIXED_DEC(80,1)},
+		{NULL},
+		{NULL},
 		
 		//Stage background
 		Back_Dummy_New,
