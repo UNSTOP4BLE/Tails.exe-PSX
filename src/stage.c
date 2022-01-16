@@ -1543,7 +1543,7 @@ void Stage_Tick(void)
 
 
 
-			FntPrint("STEP: %d", stage.song_step);
+			//FntPrint("STEP: %d", stage.song_step);
 
 			//Clear per-frame flags
 			stage.flag &= ~(STAGE_FLAG_JUST_STEP | STAGE_FLAG_SCORE_REFRESH);

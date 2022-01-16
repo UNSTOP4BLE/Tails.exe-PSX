@@ -133,7 +133,7 @@ static struct
 	} page_param;
 	
 	//Menu assets
-	Gfx_Tex tex_back, tex_ng, tex_story, tex_title, tex_bg;
+	Gfx_Tex tex_back, tex_backf, tex_backo, tex_ng, tex_story, tex_title, tex_bg;
 	FontData font_bold, font_arial;
 } menu;
 
@@ -202,17 +202,29 @@ static const char *Menu_LowerIf(const char *text, boolean lower)
 	return menu_text_buffer;
 }
 
-static void Menu_DrawBack(boolean flash, s32 scroll, u8 r0, u8 g0, u8 b0, u8 r1, u8 g1, u8 b1)
-{
+static void Menu_DrawBack()
+{	
 	RECT back_src = {0, 0, 255, 255};
-	RECT back_dst = {0, -scroll - SCREEN_WIDEADD2, SCREEN_WIDTH, SCREEN_WIDTH * 4 / 5};
+	RECT back_dst = {(SCREEN_WIDTH - 320) >> 1, (SCREEN_HEIGHT - 240) >> 1, 320, 240};
 	
-	if (flash || (animf_count & 4) == 0)
-		Gfx_DrawTexCol(&menu.tex_back, &back_src, &back_dst, r0, g0, b0);
-	else
-		Gfx_DrawTexCol(&menu.tex_back, &back_src, &back_dst, r1, g1, b1);
+	Gfx_DrawTex(&menu.tex_back, &back_src, &back_dst);
 }
 
+static void Menu_DrawBackF()
+{	
+	RECT backf_src = {0, 0, 255, 255};
+	RECT backf_dst = {(SCREEN_WIDTH - 320) >> 1, (SCREEN_HEIGHT - 240) >> 1, 320, 240};
+	
+	Gfx_DrawTex(&menu.tex_backf, &backf_src, &backf_dst);
+}
+
+static void Menu_DrawBackO()
+{	
+	RECT backo_src = {0, 0, 255, 255};
+	RECT backo_dst = {(SCREEN_WIDTH - 320) >> 1, (SCREEN_HEIGHT - 240) >> 1, 320, 240};
+	
+	Gfx_DrawTex(&menu.tex_backo, &backo_src, &backo_dst);
+}
 static void Menu_DrawWeek(const char *week, s32 x, s32 y)
 {
 	//Draw label
@@ -248,6 +260,8 @@ void Menu_Load(MenuPage page)
 	//Load menu assets
 	IO_Data menu_arc = IO_Read("\\MENU\\MENU.ARC;1");
 	Gfx_LoadTex(&menu.tex_back,  Archive_Find(menu_arc, "back.tim"),  0);
+	Gfx_LoadTex(&menu.tex_backf,  Archive_Find(menu_arc, "backf.tim"),  0);
+	Gfx_LoadTex(&menu.tex_backo,  Archive_Find(menu_arc, "backo.tim"),  0);
 	Gfx_LoadTex(&menu.tex_ng,    Archive_Find(menu_arc, "ng.tim"),    0);
 	Gfx_LoadTex(&menu.tex_story, Archive_Find(menu_arc, "story.tim"), 0);
 	Gfx_LoadTex(&menu.tex_title, Archive_Find(menu_arc, "title.tim"), 0);
@@ -493,7 +507,7 @@ void Menu_Tick(void)
 			static const char *menu_options[] = {
 				"STORY MODE",
 				"FREEPLAY",
-				"MODS",
+				"CREDITS",
 				"OPTIONS",
 				#ifdef PSXF_NETWORK
 					"JOIN SERVER",
@@ -512,7 +526,7 @@ void Menu_Tick(void)
 			
 			//Draw version identification
 			menu.font_bold.draw(&menu.font_bold,
-				"PSXFUNKIN BY CUCKYDEV",
+				"PSXTAILS BY UNSTOPABLE",
 				16,
 				SCREEN_HEIGHT - 32,
 				FontAlign_Left
@@ -614,13 +628,7 @@ void Menu_Tick(void)
 			//Draw background
 			Menu_DrawBack(
 				menu.next_page == menu.page || menu.next_page == MenuPage_Title,
-			#ifndef PSXF_NETWORK
-				menu.scroll >> (FIXED_SHIFT + 1),
-			#else
-				menu.scroll >> (FIXED_SHIFT + 3),
-			#endif
-				253 >> 1, 231 >> 1, 113 >> 1,
-				253 >> 1, 113 >> 1, 155 >> 1
+				8
 			);
 			break;
 		}
@@ -837,22 +845,9 @@ void Menu_Tick(void)
 				);
 			}
 			
-			//Draw background
-			fixed_t tgt_r = (fixed_t)((menu_options[menu.select].col >> 16) & 0xFF) << FIXED_SHIFT;
-			fixed_t tgt_g = (fixed_t)((menu_options[menu.select].col >>  8) & 0xFF) << FIXED_SHIFT;
-			fixed_t tgt_b = (fixed_t)((menu_options[menu.select].col >>  0) & 0xFF) << FIXED_SHIFT;
-			
-			menu.page_state.freeplay.back_r += (tgt_r - menu.page_state.freeplay.back_r) >> 4;
-			menu.page_state.freeplay.back_g += (tgt_g - menu.page_state.freeplay.back_g) >> 4;
-			menu.page_state.freeplay.back_b += (tgt_b - menu.page_state.freeplay.back_b) >> 4;
-			
-			Menu_DrawBack(
+			Menu_DrawBackF(
 				true,
-				8,
-				menu.page_state.freeplay.back_r >> (FIXED_SHIFT + 1),
-				menu.page_state.freeplay.back_g >> (FIXED_SHIFT + 1),
-				menu.page_state.freeplay.back_b >> (FIXED_SHIFT + 1),
-				0, 0, 0
+				8
 			);
 			break;
 		}
@@ -864,10 +859,32 @@ void Menu_Tick(void)
 				const char *text;
 				boolean difficulty;
 			} menu_options[] = {
-				{StageId_Kapi_1, "VS KAPI", false},
-				{StageId_Clwn_1, "VS TRICKY", true},
-				{StageId_Clwn_4, "   EXPURGATION", false},
-				{StageId_2_4,    "CLUCKED", false},
+				{StageId_Clwn_2, "	OG TAILS EXE DEVS", false},
+				{StageId_Clwn_2, "TELES", false},
+				{StageId_Clwn_2, "TRINGLEBOSS", false},
+				{StageId_Clwn_2, "HARRYLTS", false},
+				{StageId_Clwn_2, "P R", false},
+				{StageId_Clwn_2, "BACONMEWTWO", false},
+				{StageId_Clwn_2, "", false},
+				{StageId_Clwn_2, "	OG SONIC EXE DEVS", false},
+				{StageId_Clwn_2, "SONIC EXE TEAM", false},
+				{StageId_Clwn_2, "DAVIDGREEN", false},
+				{StageId_Clwn_2, "", false},
+				{StageId_Clwn_2, "	OG TNX DEVS", false},
+				{StageId_Clwn_2, "SAKURNYAW", false},
+				{StageId_Clwn_2, "JACK O BONNIE GAMING YT", false},
+				{StageId_Clwn_2, "", false},
+				{StageId_Kapi_1, "	PORT PROGRAMMING", false},
+				{StageId_Kapi_2, "UNSTOPABLE", false},	
+				{StageId_Kapi_2, "IGORSOU", false},	
+				{StageId_Clwn_2, "", false},
+				{StageId_Clwn_1, "	SPRITES AND IMAGES", false},
+				{StageId_Clwn_1, "UNSTOPABLE", false},
+				{StageId_Clwn_2, "", false},
+				{StageId_Clwn_1, "	PLAYTESTING", false},
+				{StageId_Clwn_1, "UNSTOPABLE", false},
+				{StageId_Clwn_1, "JOHN PAUL", false},
+				{StageId_Clwn_1, "MR RUMBLE ROSES", false},
 			};
 			
 			//Initialize page
@@ -879,7 +896,7 @@ void Menu_Tick(void)
 			
 			//Draw page label
 			menu.font_bold.draw(&menu.font_bold,
-				"MODS",
+				"CREDITS",
 				16,
 				SCREEN_HEIGHT - 32,
 				FontAlign_Left
@@ -902,17 +919,6 @@ void Menu_Tick(void)
 						menu.select++;
 					else
 						menu.select = 0;
-				}
-				
-				//Select option if cross is pressed
-				if (pad_state.press & (PAD_START | PAD_CROSS))
-				{
-					menu.next_page = MenuPage_Stage;
-					menu.page_param.stage.id = menu_options[menu.select].stage;
-					menu.page_param.stage.story = true;
-					if (!menu_options[menu.select].difficulty)
-						menu.page_param.stage.diff = StageDiff_Hard;
-					Trans_Start();
 				}
 				
 				//Return to main menu if circle is pressed
@@ -949,9 +955,7 @@ void Menu_Tick(void)
 			//Draw background
 			Menu_DrawBack(
 				true,
-				8,
-				197 >> 1, 240 >> 1, 95 >> 1,
-				0, 0, 0
+				8
 			);
 			break;
 		}
@@ -1078,11 +1082,9 @@ void Menu_Tick(void)
 			}
 			
 			//Draw background
-			Menu_DrawBack(
+			Menu_DrawBackO(
 				true,
-				8,
-				253 >> 1, 113 >> 1, 155 >> 1,
-				0, 0, 0
+				8
 			);
 			break;
 		}
